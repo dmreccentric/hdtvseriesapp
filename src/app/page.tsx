@@ -1,9 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import Carousel from "./components/Carousel"; // client component
 import MainLayout from "./components/MainLayout";
 import { IoPlayCircleOutline } from "react-icons/io5";
 import CardHeading from "./components/CardHeading";
+import { useEffect, useState } from "react";
 
 interface Movie {
   _id: string;
@@ -18,18 +21,26 @@ interface Movie {
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
-export default async function HomePage() {
-  let movies: Movie[] = [];
-  let error: string | null = null;
+export default function HomePage() {
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
-  try {
-    const res = await fetch(`${API_BASE}/api/v1/movie`, { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to fetch movies");
-    const raw = await res.json();
-    movies = raw.movies || [];
-  } catch (err: any) {
-    error = err.message || "Something went wrong";
-  }
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/movie`, {
+          cache: "no-store",
+        });
+        if (!res.ok) throw new Error("Failed to fetch movies");
+        const raw = await res.json();
+        setMovies(raw.movies || []);
+      } catch (err: any) {
+        setError(err.message || "Something went wrong");
+      }
+    };
+
+    fetchMovies();
+  }, []);
 
   if (error) {
     return (
