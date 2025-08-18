@@ -1,27 +1,49 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import MovieLayout from "../components/MovieLayout";
 import { Star } from "lucide-react";
 
+interface Movie {
+  _id: string;
+  title: string;
+  img: string;
+  himg?: string;
+  rating?: number;
+  trailer?: string;
+  createdAt?: string;
+  released?: number;
+  language?: string;
+  genres?: string[];
+  plot?: string;
+  link?: string;
+}
+
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
-export default async function MoviePage({ params }) {
-  // const { id } = params;
+export default function MoviePage({ params }: { params: { movie: string } }) {
+  const [movie, setMovie] = useState<Movie | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  let movie = null;
-  let error = null;
+  useEffect(() => {
+    const fetchMovie = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/v1/movie/${params.movie}`, {
+          cache: "no-store",
+        });
 
-  try {
-    const res = await fetch(`${API_BASE}/api/v1/movie/${params.movie}`, {
-      cache: "no-store",
-    });
+        if (!res.ok) throw new Error("Failed to fetch movie");
 
-    if (!res.ok) throw new Error("Failed to fetch movie");
+        const raw = await res.json();
+        setMovie(raw.movie || null);
+      } catch (err: any) {
+        setError(err.message || "Something went wrong");
+      }
+    };
 
-    const raw = await res.json();
-    movie = raw.movie || null;
-  } catch (err) {
-    error = err.message || "Something went wrong";
-  }
+    fetchMovie();
+  }, [params.movie]);
 
   if (error || !movie) {
     return (
