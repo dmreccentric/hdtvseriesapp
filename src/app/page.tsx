@@ -36,6 +36,7 @@ export default async function HomePage() {
       <MainLayout>
         <main className="bg-[#1a0000] text-white min-h-screen flex items-center justify-center">
           <p className="text-red-500 font-semibold">{error}</p>
+          console.log(console.error(); );
         </main>
       </MainLayout>
     );
