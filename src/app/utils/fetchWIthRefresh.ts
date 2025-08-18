@@ -1,5 +1,3 @@
-import { useRouter } from "next/navigation";
-
 export async function fetchWithRefresh(
   url: string,
   options: RequestInit = {},

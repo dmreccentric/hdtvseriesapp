@@ -6,6 +6,7 @@ import { FaTv } from "react-icons/fa";
 import { Search } from "lucide-react";
 import Footer from "../components/Footer";
 import SearchDropdown from "./SearchDropdown";
+import Image from "next/image";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -20,7 +21,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
       <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between space-x-4 bg-[#2d0202]/60 backdrop-blur-md text-white p-4 shadow-lg border-b border-white/10">
         {/* Logo */}
         <Link href="/">
-          <img src="/hdtvseries.ico" alt="Logo" className="h-10 w-13" />
+          <Image src="/hdtvseries.ico" alt="Logo" width={40} height={40} />
         </Link>
 
         {/* Search Bar */}

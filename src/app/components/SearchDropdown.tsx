@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Loader2, Star } from "lucide-react";
+import Image from "next/image";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
@@ -68,11 +69,14 @@ export default function SearchDropdown({ query }: { query: string }) {
             href={`/${movie._id}`}
             className="flex items-start space-x-3 p-3 hover:bg-white/10 transition"
           >
-            <img
+            <Image
               src={movie.img || "/placeholder.jpg"}
               alt={movie.title}
-              className="w-12 h-16 object-cover rounded"
+              width={48}
+              height={64}
+              className="object-cover rounded"
             />
+
             <div className="flex-1">
               <h4 className="text-sm font-semibold text-white truncate">
                 {movie.title}

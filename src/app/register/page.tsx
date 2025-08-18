@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function RegisterPage() {
   const API_BASE = process.env.NEXT_PUBLIC_API_URL;
@@ -94,9 +95,9 @@ export default function RegisterPage() {
 
         <p className="text-sm text-center">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-600 hover:underline">
-            Login
-          </a>
+          <Link href="/login" className="text-blue-600 hover:underline">
+            Register
+          </Link>
         </p>
       </form>
     </div>

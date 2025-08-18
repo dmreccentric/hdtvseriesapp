@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import { FaHome, FaTv, FaChevronLeft } from "react-icons/fa";
 import Footer from "../components/Footer";
+import Image from "next/image";
 
 interface MovieLayoutProps {
   children: ReactNode;
@@ -20,8 +21,9 @@ export default function MovieLayout({ children }: MovieLayoutProps) {
         {/* Logo + Title */}
         <div className="flex items-center space-x-3">
           <Link href="/">
-            <img src="/hdtvseries.ico" alt="Logo" className="h-10 w-10" />
+            <Image src="/hdtvseries.ico" alt="Logo" width={40} height={40} />
           </Link>
+
           <h1 className="text-2xl font-bold">HdTvSeries</h1>
         </div>
 
