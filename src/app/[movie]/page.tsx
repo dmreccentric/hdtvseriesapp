@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import MovieLayout from "../components/MovieLayout";
 import { Star } from "lucide-react";
@@ -22,36 +19,33 @@ interface Movie {
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
-export default function MoviePage({ params }: { params: { movie: string } }) {
-  const [movie, setMovie] = useState<Movie | null>(null);
-  const [error, setError] = useState<string | null>(null);
+async function getMovie(id: string): Promise<Movie | null> {
+  try {
+    const res = await fetch(`${API_BASE}/api/v1/movie/${id}`, {
+      cache: "no-store", // always fresh data
+    });
 
-  useEffect(() => {
-    const fetchMovie = async () => {
-      try {
-        const res = await fetch(`${API_BASE}/api/v1/movie/${params.movie}`, {
-          cache: "no-store",
-        });
+    if (!res.ok) return null;
 
-        if (!res.ok) throw new Error("Failed to fetch movie");
+    const raw = await res.json();
+    return raw.movie || null;
+  } catch {
+    return null;
+  }
+}
 
-        const raw = await res.json();
-        setMovie(raw.movie || null);
-      } catch (err: any) {
-        setError(err.message || "Something went wrong");
-      }
-    };
+export default async function MoviePage({
+  params,
+}: {
+  params: { movie: string };
+}) {
+  const movie = await getMovie(params.movie);
 
-    fetchMovie();
-  }, [params.movie]);
-
-  if (error || !movie) {
+  if (!movie) {
     return (
       <MovieLayout>
         <main className="bg-[#1a0000] text-white min-h-screen flex items-center justify-center">
-          <p className="text-red-500 font-semibold">
-            {error || "Movie not found"}
-          </p>
+          <p className="text-red-500 font-semibold">Movie not found</p>
         </main>
       </MovieLayout>
     );
@@ -71,6 +65,7 @@ export default function MoviePage({ params }: { params: { movie: string } }) {
               alt={movie.title}
               fill
               className="object-fill rounded-2xl"
+              priority // improves LCP (faster image load)
             />
           </div>
 
