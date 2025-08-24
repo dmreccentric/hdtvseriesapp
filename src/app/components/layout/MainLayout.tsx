@@ -4,8 +4,8 @@ import Link from "next/link";
 import { ReactNode, useState } from "react";
 import { FaTv } from "react-icons/fa";
 import { Search } from "lucide-react";
-import Footer from "../components/Footer";
-import SearchDropdown from "./SearchDropdown";
+import Footer from "../../components/Footer";
+import SearchDropdown from "../SearchDropdown";
 import Image from "next/image";
 
 interface MainLayoutProps {

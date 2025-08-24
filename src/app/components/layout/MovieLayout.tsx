@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { ReactNode } from "react";
 import { FaHome, FaTv, FaChevronLeft } from "react-icons/fa";
-import Footer from "../components/Footer";
+import Footer from "../../components/Footer";
 import Image from "next/image";
+import BackButton from "../common/BackButton";
 
 interface MovieLayoutProps {
   children: ReactNode;
@@ -14,9 +15,7 @@ export default function MovieLayout({ children }: MovieLayoutProps) {
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between bg-[#2d0202]/60 backdrop-blur-md border-b border-white/10 text-white p-4 shadow-lg">
         {/* Back button */}
-        <Link href="/" className="text-3xl font-light p-1 hover:text-gray-300">
-          <FaChevronLeft />
-        </Link>
+        <BackButton />
 
         {/* Logo + Title */}
         <div className="flex items-center space-x-3">

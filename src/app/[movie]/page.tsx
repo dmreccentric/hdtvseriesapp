@@ -1,5 +1,5 @@
 import Image from "next/image";
-import MovieLayout from "../components/MovieLayout";
+import MovieLayout from "../components/layout/MovieLayout";
 import { Star } from "lucide-react";
 
 interface Movie {
