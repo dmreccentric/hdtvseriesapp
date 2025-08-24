@@ -22,7 +22,7 @@ const arvo = Arvo({
 // });
 
 export const metadata: Metadata = {
-  title: "HDTvSeries",
+  title: "Search & Download Movies and Tv Shows",
   description: "HDTvSeries Official Website",
   icons: {
     icon: "/hdtvseries.ico", // <- set your favicon here
