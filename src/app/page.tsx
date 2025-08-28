@@ -1,8 +1,6 @@
-import Link from "next/link";
-import Image from "next/image";
 import Carousel from "./components/Carousel"; // client component
 import MainLayout from "./components/layout/MainLayout";
-import { IoPlayCircleOutline } from "react-icons/io5";
+
 import CardHeading from "./components/CardHeading";
 import NewlyReleased from "./components/card/NewlyReleased";
 import PopularMovies from "./components/card/PopularMovies";

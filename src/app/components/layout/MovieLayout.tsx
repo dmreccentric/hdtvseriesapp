@@ -38,7 +38,7 @@ export default function MovieLayout({ children }: MovieLayoutProps) {
       </header>
 
       {/* Main content */}
-      <main className="flex-1 pt-20">{children}</main>
+      <main className="flex-1 pt-18.5">{children}</main>
       {/* added pt-20 so content isn't hidden under the fixed header */}
 
       {/* Footer */}

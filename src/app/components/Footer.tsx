@@ -30,7 +30,7 @@ const Footer = () => {
           <Link href="/Series" className="w-fit text-gray-500  mb-1 ">
             Series
           </Link>
-          <Link href="/Trailers" className="text-gray-500  w-fit ">
+          <Link href="/trailers" className="text-gray-500  w-fit ">
             Trailers
           </Link>
         </div>

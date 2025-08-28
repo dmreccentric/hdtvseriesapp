@@ -33,6 +33,30 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+/* globals.css */
+.scrollbar-custom::-webkit-scrollbar {
+  width: 8px; /* width of the vertical scrollbar */
+  height: 8px; /* height of horizontal scrollbar */
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: #1a0000; /* track color */
+  border-radius: 9999px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: #ff4d6d; /* thumb color */
+  border-radius: 9999px;
+  border: 2px solid #1a0000; /* space around thumb */
+}
+
+/* For Firefox */
+.scrollbar-custom {
+  scrollbar-width: thin;
+  scrollbar-color: #ff4d6d #1a0000;
+}
+
 @layer base {
   :root {
     --font-arvo: var(--font-arvo);

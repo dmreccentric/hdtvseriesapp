@@ -9,7 +9,7 @@ export default function MovieCard({ movie }: { movie: any }) {
   const [active, setActive] = useState(false);
 
   return (
-    <Link href={`/${movie.trailer}`} onClick={() => setActive(true)}>
+    <Link href={`${movie.trailer}`} onClick={() => setActive(true)}>
       <div
         className={`relative w-[350px] md:w-[350px] lg:w-[400px] h-[200px] md:h-[250px] lg:h-[300px] flex-shrink-0 overflow-hidden shadow-lg hover:scale-105 transition 
           ${
