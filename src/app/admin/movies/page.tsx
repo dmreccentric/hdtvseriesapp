@@ -61,17 +61,22 @@ export default function MoviesAdminPage() {
   const [fetching, setFetching] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   // Fetch movies
-  const fetchMovies = async () => {
+  const fetchMovies = async (pageNumber = 1) => {
     try {
       setFetching(true);
-      const res = await fetch(`${API_BASE}/api/v1/movie`, {
-        cache: "no-store",
-      });
+      const res = await fetch(
+        `${API_BASE}/api/v1/movie?limit=20&page=${pageNumber}`,
+        { cache: "no-store" }
+      );
       if (res.ok) {
         const data = await res.json();
         setMovies(data.movies || []);
+        setPage(data.page || 1);
+        setTotalPages(data.totalPages || 1);
       } else {
         setMovies([]);
         console.error("Failed to fetch movies:", res.statusText);
@@ -84,9 +89,17 @@ export default function MoviesAdminPage() {
     }
   };
 
+  // Pagination controls
+  const handlePrevPage = () => {
+    if (page > 1) fetchMovies(page - 1);
+  };
+  const handleNextPage = () => {
+    if (page < totalPages) fetchMovies(page + 1);
+  };
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    fetchMovies();
+    fetchMovies(1);
   }, []);
 
   // const handleChange = (
@@ -574,16 +587,6 @@ export default function MoviesAdminPage() {
                     </a>
                   </p>
                 )}
-                {/* {movie.rating && (
-                  <p className="text-xs text-gray-600">
-                    Rating: {movie.rating}/10
-                  </p>
-                )}
-                {movie.released && (
-                  <p className="text-xs text-gray-600">
-                    Released: {movie.released}
-                  </p>
-                )} */}
               </div>
 
               {/* Actions */}
@@ -604,6 +607,25 @@ export default function MoviesAdminPage() {
             </div>
           ))
         )}
+        <div className="flex justify-center gap-4 mt-6">
+          <button
+            onClick={handlePrevPage}
+            disabled={page === 1}
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="px-4 py-2">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            onClick={handleNextPage}
+            disabled={page === totalPages}
+            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

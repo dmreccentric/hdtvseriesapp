@@ -1,6 +1,5 @@
 import Carousel from "./components/Carousel"; // client component
 import MainLayout from "./components/layout/MainLayout";
-
 import CardHeading from "./components/CardHeading";
 import NewlyReleased from "./components/card/NewlyReleased";
 import PopularMovies from "./components/card/PopularMovies";
