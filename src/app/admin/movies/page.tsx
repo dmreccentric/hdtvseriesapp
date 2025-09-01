@@ -12,10 +12,12 @@ interface Movie {
   type: string;
   language?: string;
   link?: string;
+  trailer?: string;
   rating?: number;
   released?: number;
   seasons?: { seasonNumber: number; episodes: { episodeNumber: number }[] }[];
   img?: string;
+  himg?: string;
 }
 
 export default function MoviesAdminPage() {
@@ -56,7 +58,9 @@ export default function MoviesAdminPage() {
     link: "",
     rating: "",
     released: "",
+    trailer: "",
     image: null as File | null,
+    himage: null as File | null,
     seasonNumber: "",
     episodeNumber: "",
   });
@@ -64,6 +68,7 @@ export default function MoviesAdminPage() {
   const [fetching, setFetching] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [HPreview, setHPreview] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -121,6 +126,7 @@ export default function MoviesAdminPage() {
 
       // ✅ Set preview from the file
       setPreview(URL.createObjectURL(file));
+      setHPreview(URL.createObjectURL(file));
     } else {
       setForm({ ...form, [name]: value });
     }
@@ -145,11 +151,14 @@ export default function MoviesAdminPage() {
       link: "",
       rating: "",
       released: "",
+      trailer: "",
       image: null,
+      himage: null,
       seasonNumber: "",
       episodeNumber: "",
     });
     setPreview(null);
+    setHPreview(null);
     setEditingId(null);
   };
 
@@ -163,6 +172,7 @@ export default function MoviesAdminPage() {
     fd.append("plot", form.plot);
     fd.append("type", form.type);
     fd.append("language", form.language);
+    fd.append("trailer", form.trailer);
     fd.append("genres", JSON.stringify(form.genres));
     if (form.link) fd.append("link", form.link);
     if (form.rating) fd.append("rating", form.rating.toString());
@@ -179,6 +189,7 @@ export default function MoviesAdminPage() {
     }
 
     if (form.image) fd.append("img", form.image);
+    if (form.himage) fd.append("img", form.himage);
 
     try {
       setLoading(true);
@@ -313,10 +324,10 @@ export default function MoviesAdminPage() {
   }, [form.type]);
 
   return (
-    <div className="space-y-10 p-8 bg-gray-100 min-h-screen">
+    <div className="space-y-1 p-2 bg-gray-100 h-screen mb-3">
       <form
         onSubmit={handleCreateOrEdit}
-        className="bg-white shadow-md p-6 rounded-lg space-y-4 max-w-lg mx-auto"
+        className="bg-white shadow-md p-2 rounded-lg space-y-4  mx-auto"
       >
         <h2 className="text-2xl font-bold text-gray-800">
           🎬 {editingId ? "Edit Movie" : "Add New Movie"}
@@ -352,6 +363,16 @@ export default function MoviesAdminPage() {
           name="link"
           value={form.link}
           placeholder="Movie Link"
+          onChange={handleChange}
+          className="border p-2 w-full rounded focus:ring-2 focus:ring-blue text-black"
+        />
+
+        <label className="font-semibold text-black">Trailer</label>
+        <input
+          type="text"
+          name="trailer"
+          value={form.trailer}
+          placeholder="Trailer Link"
           onChange={handleChange}
           className="border p-2 w-full rounded focus:ring-2 focus:ring-blue text-black"
         />
@@ -487,26 +508,59 @@ export default function MoviesAdminPage() {
           onChange={handleChange}
           className="border p-2 w-full rounded focus:ring-2 focus:ring-blue text-black"
         />
-        <div className="mt-4">
-          <p className="text-sm text-gray-600 mb-2">Preview:</p>
 
-          {preview ? (
-            // If user picked a new file
-            <img
-              src={preview}
-              alt="Preview"
-              className="w-22 h-30 object-fill rounded-xl shadow-md border"
-            />
-          ) : form.image && typeof form.image === "string" ? (
-            // If editing and existing image URL is present
-            <img
-              src={`${API_BASE}/${form.image}`} // adjust if stored differently
-              alt="Existing"
-              className="w-48 h-64 object-cover rounded-xl shadow-md border"
-            />
-          ) : (
-            <p className="text-gray-400">No image selected</p>
-          )}
+        {/* HImage */}
+        <label className="font-semibold text-black">H-Movie Image</label>
+        <input
+          type="file"
+          name="himage"
+          onChange={handleChange}
+          className="border p-2 w-full rounded focus:ring-2 focus:ring-blue text-black"
+        />
+        <div className="flex space-x-3">
+          <div className="mt-4">
+            <p className="text-sm text-gray-600 mb-2">Preview:</p>
+
+            {preview ? (
+              // If user picked a new file
+              <img
+                src={preview}
+                alt="Preview"
+                className="w-22 h-30 object-fill rounded-xl shadow-md border"
+              />
+            ) : form.image && typeof form.image === "string" ? (
+              // If editing and existing image URL is present
+              <img
+                src={`${API_BASE}/${form.image}`} // adjust if stored differently
+                alt="Existing"
+                className="w-48 h-64 object-cover rounded-xl shadow-md border"
+              />
+            ) : (
+              <p className="text-gray-400">No image selected</p>
+            )}
+          </div>
+
+          <div className="mt-4">
+            <p className="text-sm text-gray-600 mb-2">H-Preview:</p>
+
+            {HPreview ? (
+              // If user picked a new file
+              <img
+                src={HPreview}
+                alt="Preview"
+                className="w-48 h-30 object-fill rounded-sm shadow-md border"
+              />
+            ) : form.himage && typeof form.himage === "string" ? (
+              // If editing and existing image URL is present
+              <img
+                src={`${API_BASE}/${form.himage}`} // adjust if stored differently
+                alt="Existing"
+                className="w-64 h-64 object-cover rounded-xl shadow-md border"
+              />
+            ) : (
+              <p className="text-gray-400">No image selected</p>
+            )}
+          </div>
         </div>
 
         <button

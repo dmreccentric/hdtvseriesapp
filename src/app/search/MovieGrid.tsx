@@ -27,7 +27,7 @@ export default function MovieGrid({ movies }: { movies: Movie[] }) {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const cardsPerPage = 32;
+  const cardsPerPage = 28;
 
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
@@ -184,7 +184,7 @@ export default function MovieGrid({ movies }: { movies: Movie[] }) {
           </div>
         ))}
       </div>
-      {currentMovies.length > cardsPerPage ? (
+      {filtered.length > cardsPerPage && (
         <div className="flex justify-between mt-4">
           <button
             className="bg-gray-600 text-white px-4 py-2 rounded disabled:opacity-50"
@@ -194,6 +194,51 @@ export default function MovieGrid({ movies }: { movies: Movie[] }) {
             Previous
           </button>
 
+          {/* Page Numbers with Collapse */}
+          {(() => {
+            const totalPages = Math.ceil(filtered.length / cardsPerPage);
+            const pages: (number | string)[] = [];
+
+            if (totalPages <= 7) {
+              // Show all if few pages
+              for (let i = 1; i <= totalPages; i++) pages.push(i);
+            } else {
+              // Always show first + last
+              pages.push(1);
+
+              if (currentPage > 4) pages.push("...");
+
+              const start = Math.max(2, currentPage - 1);
+              const end = Math.min(totalPages - 1, currentPage + 1);
+
+              for (let i = start; i <= end; i++) pages.push(i);
+
+              if (currentPage < totalPages - 3) pages.push("...");
+
+              pages.push(totalPages);
+            }
+
+            return pages.map((p, idx) =>
+              typeof p === "number" ? (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentPage(p)}
+                  className={`px-3 py-1 rounded ${
+                    currentPage === p
+                      ? "bg-red-600 text-white font-bold"
+                      : "bg-gray-300 text-black hover:bg-gray-400"
+                  }`}
+                >
+                  {p}
+                </button>
+              ) : (
+                <span key={idx} className="px-2">
+                  {p}
+                </span>
+              )
+            );
+          })()}
+
           <button
             className="bg-gray-600 text-white px-4 py-2 rounded disabled:opacity-50"
             disabled={currentPage * cardsPerPage >= filtered.length}
@@ -202,8 +247,6 @@ export default function MovieGrid({ movies }: { movies: Movie[] }) {
             Next
           </button>
         </div>
-      ) : (
-        <div></div>
       )}
     </>
   );
