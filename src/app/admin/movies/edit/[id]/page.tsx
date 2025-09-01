@@ -13,6 +13,7 @@ interface Movie {
   link?: string;
   rating?: number;
   released?: number;
+  trailer: number;
   seasons?: { seasonNumber: number; episodes: { episodeNumber: number }[] }[];
   img?: string;
   himg?: string;
@@ -82,6 +83,7 @@ export default function EditMoviePage() {
     link: "",
     rating: "",
     released: "",
+    trailer: "",
     image: null as File | null,
     himage: null as File | null,
     seasonNumber: "",
@@ -109,6 +111,7 @@ export default function EditMoviePage() {
         link: data.movie.link || "",
         rating: data.movie.rating?.toString() || "",
         released: data.movie.released?.toString() || "",
+        trailer: data.movie.trailer || "",
         image: null,
         himage: null,
         seasonNumber: data.movie.seasons?.[0]?.seasonNumber.toString() || "",
@@ -167,6 +170,7 @@ export default function EditMoviePage() {
     fd.append("language", form.language);
     fd.append("genres", JSON.stringify(form.genres));
     if (form.link) fd.append("link", form.link);
+    if (form.trailer) fd.append("trailer", form.trailer);
     if (form.rating) fd.append("rating", form.rating.toString());
     if (form.released) fd.append("released", form.released.toString());
     if (form.image) fd.append("img", form.image);
@@ -194,7 +198,6 @@ export default function EditMoviePage() {
 
   return (
     <div className="p-1  mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Edit Movie</h1>
       <form
         onSubmit={handleSubmit}
         className="bg-white shadow-md p-2 rounded-lg space-y-4 max-w-lg mx-auto"
@@ -231,6 +234,15 @@ export default function EditMoviePage() {
           name="link"
           value={form.link}
           placeholder="Movie Link"
+          onChange={handleChange}
+          className="border p-2 w-full rounded focus:ring-2 focus:ring-blue text-black"
+        />
+        <label className="font-semibold text-black">Trailer</label>
+        <input
+          type="text"
+          name="trailer"
+          value={form.trailer}
+          placeholder="Trailer Link"
           onChange={handleChange}
           className="border p-2 w-full rounded focus:ring-2 focus:ring-blue text-black"
         />
