@@ -170,6 +170,7 @@ export default function EditMoviePage() {
     if (form.rating) fd.append("rating", form.rating.toString());
     if (form.released) fd.append("released", form.released.toString());
     if (form.image) fd.append("img", form.image);
+    if (form.himage) fd.append("himg", form.himage);
 
     try {
       setLoading(true);
