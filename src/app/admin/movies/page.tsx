@@ -574,6 +574,25 @@ export default function MoviesAdminPage() {
 
       {/* Movie List */}
       <div className="mt-10 max-w-3xl mx-auto space-y-4">
+        <div className="flex justify-center gap-4 mt-6">
+          <button
+            onClick={handlePrevPage}
+            disabled={page === 1}
+            className="px-4 py-2 bg-black text-white rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="px-4 py-2 text-black">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            onClick={handleNextPage}
+            disabled={page === totalPages}
+            className="px-4 py-2 bg-black text-white  rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
         {fetching ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {Array.from({ length: 8 }).map((_, i) => (
