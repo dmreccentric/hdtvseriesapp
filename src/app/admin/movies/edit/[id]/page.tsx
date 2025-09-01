@@ -193,11 +193,11 @@ export default function EditMoviePage() {
   };
 
   return (
-    <div className="p-8 max-w-lg mx-auto">
+    <div className="p-1  mx-auto">
       <h1 className="text-3xl font-bold mb-6">Edit Movie</h1>
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-md p-6 rounded-lg space-y-4 max-w-lg mx-auto"
+        className="bg-white shadow-md p-2 rounded-lg space-y-4 max-w-lg mx-auto"
       >
         <h2 className="text-2xl font-bold text-gray-800">🎬 Edit Movie</h2>
 

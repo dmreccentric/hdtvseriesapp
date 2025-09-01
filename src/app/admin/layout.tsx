@@ -16,7 +16,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <AdminSidebar open={sidebarOpen} setOpen={setSidebarOpen} />
       <div className="flex-1 flex flex-col">
         <AdminHeader setSidebarOpen={setSidebarOpen} />
-        <main className="flex-1 overflow-y-auto p-6">{children}</main>
+        <main className="flex-1 overflow-y-auto p-1">{children}</main>
       </div>
     </div>
   );
