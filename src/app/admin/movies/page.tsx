@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface Movie {
   _id: string;
@@ -18,6 +19,8 @@ interface Movie {
 }
 
 export default function MoviesAdminPage() {
+  const router = useRouter();
+
   const API_BASE = process.env.NEXT_PUBLIC_API_URL;
   const genresEnum = [
     "Action",
@@ -97,20 +100,9 @@ export default function MoviesAdminPage() {
     if (page < totalPages) fetchMovies(page + 1);
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     fetchMovies(1);
   }, []);
-
-  // const handleChange = (
-  //   e: React.ChangeEvent<
-  //     HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-  //   >
-  // ) => {
-  //   const { name, value, files } = e.target;
-  //   if (files && files.length > 0) setForm({ ...form, [name]: files[0] });
-  //   else setForm({ ...form, [name]: value });
-  // };
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -227,21 +219,22 @@ export default function MoviesAdminPage() {
   };
 
   const handleEdit = (movie: Movie) => {
-    setEditingId(movie._id);
-    setForm({
-      title: movie.title,
-      plot: movie.plot,
-      genres: movie.genres,
-      type: movie.type,
-      language: movie.language || "",
-      link: movie.link || "",
-      rating: movie.rating?.toString() || "",
-      released: movie.released?.toString() || "",
-      image: null, // reset file input; user can upload new image
-      seasonNumber: movie.seasons?.[0]?.seasonNumber.toString() || "",
-      episodeNumber:
-        movie.seasons?.[0]?.episodes?.[0]?.episodeNumber.toString() || "",
-    });
+    // setEditingId(movie._id);
+    // setForm({
+    //   title: movie.title,
+    //   plot: movie.plot,
+    //   genres: movie.genres,
+    //   type: movie.type,
+    //   language: movie.language || "",
+    //   link: movie.link || "",
+    //   rating: movie.rating?.toString() || "",
+    //   released: movie.released?.toString() || "",
+    //   image: null, // reset file input; user can upload new image
+    //   seasonNumber: movie.seasons?.[0]?.seasonNumber.toString() || "",
+    //   episodeNumber:
+    //     movie.seasons?.[0]?.episodes?.[0]?.episodeNumber.toString() || "",
+    // });
+    router.push(`/admin/movies/edit/${movie._id}`);
   };
 
   const handleDelete = async (id: string) => {
@@ -564,7 +557,7 @@ export default function MoviesAdminPage() {
                   }
                   alt={movie.title}
                   fill
-                  className="w-full h-full object-cover rounded"
+                  className="w-full h-full object-fill rounded"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
               </div>
@@ -611,17 +604,17 @@ export default function MoviesAdminPage() {
           <button
             onClick={handlePrevPage}
             disabled={page === 1}
-            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+            className="px-4 py-2 bg-black text-white rounded disabled:opacity-50"
           >
             Previous
           </button>
-          <span className="px-4 py-2">
+          <span className="px-4 py-2 text-black">
             Page {page} of {totalPages}
           </span>
           <button
             onClick={handleNextPage}
             disabled={page === totalPages}
-            className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
+            className="px-4 py-2 bg-black text-white  rounded disabled:opacity-50"
           >
             Next
           </button>
