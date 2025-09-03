@@ -6,7 +6,11 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        arvo: ["var(--font-arvo)", "serif"],
+      },
+    },
   },
   plugins: [require("@tailwindcss/line-clamp")],
 };

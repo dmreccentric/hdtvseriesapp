@@ -56,13 +56,3 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #ff4d6d #1a0000;
 }
-
-@layer base {
-  :root {
-    --font-arvo: var(--font-arvo);
-  }
-
-  .font-arvo {
-    font-family: var(--font-arvo);
-  }
-}

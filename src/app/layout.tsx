@@ -9,18 +9,6 @@ const arvo = Arvo({
   variable: "--font-arvo",
 });
 
-// // Geist Sans
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// // Geist Mono
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
-
 export const metadata: Metadata = {
   title: "Search & Download Movies and Tv Shows",
   description: "HDTvSeries Official Website",

@@ -18,6 +18,7 @@ interface Movie {
 }
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
+console.log("API_BASE:", API_BASE);
 
 async function getMovies(): Promise<Movie[]> {
   try {
@@ -34,9 +35,28 @@ async function getMovies(): Promise<Movie[]> {
     return [];
   }
 }
+// async function getNewMovies(): Promise<Movie[]> {
+//   try {
+//     const res = await fetch(`${API_BASE}/api/v1/newmovie`, {
+//       cache: "no-store", // ensures always fresh
+//     });
+
+//     if (!res.ok) throw new Error("Failed to fetch movies");
+
+//     const raw = await res.json();
+//     return raw.movies || [];
+
+//     console.log("NewMovie API response:", raw);
+//   } catch (err) {
+//     console.error("getNewMovies error:", err);
+//     return [];
+//   }
+// }
 
 export default async function HomePage() {
   const movies = await getMovies();
+  // const newMovies = await getNewMovies();
+  // console.log(newMovies);
 
   // Slice & sort like before
   const carouselMovies = movies.sort(() => 0.5 - Math.random()).slice(0, 5);
@@ -45,13 +65,7 @@ export default async function HomePage() {
     .sort((a, b) => (b.rating || 0) - (a.rating || 0))
     .slice(0, 9);
   const trailers = movies.filter((m) => m.trailer).slice(0, 10);
-  const recentlyAdded = [...movies]
-    .sort((a, b) => {
-      const aDate = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-      const bDate = b.createdAt ? new Date(b.createdAt).getTime() : 0;
-      return bDate - aDate;
-    })
-    .slice(0, 10);
+  // const recentlyAdded = [...newMovies].slice(0, 10);
   const newReleases = [...movies]
     .filter((m) => typeof m.released === "number")
     .sort((a, b) => (b.released || 0) - (a.released || 0))
@@ -89,9 +103,7 @@ export default async function HomePage() {
         <section className="mb-10">
           <CardHeading title="RECENTLY ADDED" />
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide scroll-smooth no-scrollbar">
-            {recentlyAdded.map((movie) => (
-              <RecentlyAdded key={movie._id} movie={movie} />
-            ))}
+            <RecentlyAdded />
           </div>
         </section>
 
