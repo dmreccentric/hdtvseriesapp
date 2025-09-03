@@ -27,7 +27,7 @@ const Footer = () => {
           <Link href="/Movies" className="w-fit text-gray-500  mb-1 ">
             Movies
           </Link>
-          <Link href="/Series" className="w-fit text-gray-500  mb-1 ">
+          <Link href="/series" className="w-fit text-gray-500  mb-1 ">
             Series
           </Link>
           <Link href="/trailers" className="text-gray-500  w-fit ">
