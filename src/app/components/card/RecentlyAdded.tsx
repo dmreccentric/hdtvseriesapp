@@ -38,6 +38,15 @@ async function getNewMovies(): Promise<Movie[]> {
   }
 }
 
+function toTitleCase(str: string) {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export default async function MovieCard() {
   const NewMovie = await getNewMovies();
 
@@ -69,12 +78,12 @@ export default async function MovieCard() {
               </div>
 
               {/* Title */}
-              <div className="mt-2 px-2 py-1 rounded-lg text-white text-xs font-normal font-arvo text-left">
-                {movie.title}
+              <div className="mt-2 px-2 py-1 rounded-lg  text-sm font-normal font-arvo text-left text-red-600">
+                {toTitleCase(movie.title)}
               </div>
               {/* Sub Title */}
-              <div className="mt-2 px-2 py-1 rounded-lg text-white text-xs font-normal font-arvo text-center">
-                {movie.subtitle}
+              <div className="mt-2 px-2 py-1 rounded-lg text-white text-[10px] font-normal font-arvo text-left">
+                {toTitleCase(movie.subtitle)}
               </div>
             </div>
           </div>

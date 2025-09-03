@@ -4,6 +4,15 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+function toTitleCase(str: string) {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export default function MovieCard({ movie }: { movie: any }) {
   const [active, setActive] = useState(false);
 
@@ -44,7 +53,7 @@ export default function MovieCard({ movie }: { movie: any }) {
 
         {/* Movie Title */}
         <div className="mt-2 px-2 py-1 rounded-lg text-white text-xs text-left font-arvo">
-          {movie.title}
+          {toTitleCase(movie.title)}
         </div>
       </div>
     </Link>
