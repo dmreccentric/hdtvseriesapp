@@ -39,7 +39,7 @@ export default function MovieLayout({ children }: MovieLayoutProps) {
         </div>
 
         <div>
-          <SideBar right />
+          <SideBar />
         </div>
       </header>
 

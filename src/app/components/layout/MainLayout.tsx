@@ -20,13 +20,10 @@ export default function MainLayout({ children }: MainLayoutProps) {
     <div className="min-h-screen flex flex-col bg-[#1a0000]">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between space-x-4 bg-[#2d0202]/60 backdrop-blur-md text-white p-4 shadow-lg border-b border-white/10">
-        {/* Logo
+        {/* Logo */}
         <Link href="/">
           <Image src="/hdtvseries.ico" alt="Logo" width={40} height={40} />
-        </Link> */}
-        <div>
-          <SideBar />
-        </div>
+        </Link>
 
         {/* Search Bar */}
         <div className="relative w-full max-w-md">
@@ -44,9 +41,12 @@ export default function MainLayout({ children }: MainLayoutProps) {
         </div>
 
         {/* Icon (TV) */}
-        <Link href="/search" className="text-2xl hover:text-gray-300">
+        {/* <Link href="/search" className="text-2xl hover:text-gray-300">
           <FaTv />
-        </Link>
+        </Link> */}
+        <div>
+          <SideBar />
+        </div>
       </header>
 
       {/* Main content */}
