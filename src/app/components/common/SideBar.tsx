@@ -70,7 +70,7 @@ export default function Sidebar() {
             <PlayCircle className="h-5 w-5" /> Trailers
           </Link>
           <Link
-            href="/filter"
+            href="/search"
             className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 transition"
           >
             <Sliders className="h-5 w-5" /> Filter

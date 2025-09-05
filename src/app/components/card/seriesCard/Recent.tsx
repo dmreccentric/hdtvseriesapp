@@ -111,7 +111,7 @@ export default function MovieCard() {
                 </div>
 
                 {/* Subtitle */}
-                <div className="mt-2 px-2 py-1 rounded-lg text-white text-[13px] font-normal font-arvo text-left">
+                <div className="px-2 py-1 rounded-lg text-white text-[13px] font-normal font-arvo text-left">
                   {toTitleCase(movie.subtitle)}
                 </div>
               </div>
