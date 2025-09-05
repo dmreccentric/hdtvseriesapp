@@ -22,7 +22,7 @@ export default function Sidebar() {
       {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          className="fixed top-0 right-0 h-screen bg-black/50 z-30 md:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
