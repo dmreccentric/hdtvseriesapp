@@ -95,7 +95,7 @@ const DashboardPage = () => {
         {/* Buttons */}
         <div className="flex gap-4 mb-6 overflow-x-auto scrollbar-hide scroll-smooth no-scrollbar">
           <button
-            className={`px-4 py-2 rounded-4xl ${
+            className={`px-4 py-2 rounded-4xl whitespace-nowrap ${
               activeTab === "recent"
                 ? "bg-blue-500 text-white"
                 : "bg-gray-200 text-black"
@@ -105,7 +105,7 @@ const DashboardPage = () => {
             Recently Added
           </button>
           <button
-            className={`px-4 py-2 rounded-4xl ${
+            className={`px-4 py-2 rounded-4xl whitespace-nowrap ${
               activeTab === "topRated"
                 ? "bg-blue-500 text-white"
                 : "bg-gray-200 text-black"
@@ -115,7 +115,7 @@ const DashboardPage = () => {
             Top Rated
           </button>
           <button
-            className={`px-4 py-2 rounded-4xl ${
+            className={`px-4 py-2 rounded-4xl whitespace-nowrap ${
               activeTab === "newRelease"
                 ? "bg-blue-500 text-white"
                 : "bg-gray-200 text-black"
