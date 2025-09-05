@@ -45,7 +45,7 @@ export default function MovieCard() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const cardsPerPage = 28;
+  const cardsPerPage = 30;
 
   useEffect(() => {
     async function fetchMovies() {
@@ -76,7 +76,7 @@ export default function MovieCard() {
   if (loading) {
     return (
       <div className="flex flex-col">
-        <div className="grid gap-4 grid-cols-2">
+        <div className="grid gap-4 grid-cols-2 md:grid-cols-5">
           {Array.from({ length: 12 }).map((_, idx) => (
             <MovieSkeleton key={idx} />
           ))}
@@ -89,7 +89,7 @@ export default function MovieCard() {
 
   return (
     <div className="flex flex-col">
-      <div className="grid gap-4 grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-5 grid-cols-2">
         {movies.map((movie) => (
           <Link key={movie._id} href={`/${movie._id}?source=newmovie`}>
             <div>

@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { ReactNode, useState } from "react";
-import { FaHome } from "react-icons/fa";
 import { Search, X } from "lucide-react";
 import Footer from "../../components/Footer";
 import SearchDropdown from "../SearchDropdown";
 import BackButton from "../common/BackButton";
+import Nav from "../common/Nav";
 import Image from "next/image";
+import SideBar from "../common/SideBar";
 
 interface SearchLayoutProps {
   children: ReactNode;
@@ -57,10 +58,12 @@ export default function SearchLayout({ children }: SearchLayoutProps) {
           <SearchDropdown query={query} />
         </div>
 
-        {/* Home Icon */}
-        <Link href="/" className="text-2xl hover:text-gray-300 p-1">
-          <FaHome />
-        </Link>
+        <div>
+          <SideBar />
+        </div>
+        <div className="hidden md:flex">
+          <Nav />
+        </div>
       </header>
 
       {/* Main content */}

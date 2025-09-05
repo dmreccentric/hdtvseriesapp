@@ -8,6 +8,7 @@ import Footer from "../../components/Footer";
 import SearchDropdown from "../SearchDropdown";
 import SideBar from "../common/SideBar";
 import Image from "next/image";
+import Nav from "../common/Nav";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -46,6 +47,9 @@ export default function MainLayout({ children }: MainLayoutProps) {
         </Link> */}
         <div>
           <SideBar />
+        </div>
+        <div className="hidden md:flex">
+          <Nav />
         </div>
       </header>
 

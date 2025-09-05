@@ -49,7 +49,7 @@ export default function MovieCard() {
   const initialPage = parseInt(searchParams.get("page") || "1", 10);
   const [currentPage, setCurrentPage] = useState(initialPage);
 
-  const cardsPerPage = 28;
+  const cardsPerPage = 30;
 
   useEffect(() => {
     async function fetchMovies() {
@@ -83,7 +83,7 @@ export default function MovieCard() {
     // ✅ Show 12 skeletons while loading
     return (
       <div className="flex flex-col">
-        <div className="grid gap-4 grid-cols-2">
+        <div className="grid gap-4 grid-cols-2 md:grid-cols-5">
           {Array.from({ length: 12 }).map((_, idx) => (
             <MovieSkeleton key={idx} />
           ))}
@@ -101,7 +101,7 @@ export default function MovieCard() {
 
   return (
     <div className="flex flex-col">
-      <div className="grid gap-4 grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-5 grid-cols-2">
         {currentMovies.map((movie) => (
           <Link key={movie._id} href={`/${movie._id}`}>
             <div className="relative w-full md:w-[180px] lg:w-[200px] flex-shrink-0">

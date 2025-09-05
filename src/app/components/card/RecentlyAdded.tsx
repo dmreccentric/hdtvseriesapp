@@ -38,7 +38,7 @@ async function getNewMovies(): Promise<Movie[]> {
   }
 }
 
-function toTitleCase(str: string) {
+export function toTitleCase(str: string) {
   if (!str) return "";
   return str
     .toLowerCase()

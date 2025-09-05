@@ -36,7 +36,7 @@ export default function MovieGrid({ movies }: { movies: Movie[] }) {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const cardsPerPage = 28;
+  const cardsPerPage = 36;
 
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
@@ -182,7 +182,7 @@ export default function MovieGrid({ movies }: { movies: Movie[] }) {
       </div>
 
       {/* Movies/Series Grid */}
-      <div className="grid grid-cols-4 gap-3 mt-6">
+      <div className="grid grid-cols-3 md:grid-cols-4 gap-3 mt-6">
         {currentMovies.map((item) => (
           <div
             key={item._id}

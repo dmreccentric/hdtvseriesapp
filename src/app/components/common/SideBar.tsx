@@ -29,7 +29,7 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 right-0 h-screen w-60 bg-[#1a0101] text-white shadow-lg transform transition-transform duration-300 z-40
+        className={`fixed md:hidden top-0 right-0 h-screen w-60 bg-[#1a0101] text-white shadow-lg transform transition-transform duration-300 z-40
           ${isOpen ? "translate-x-0" : "translate-x-full"} md:translate-x-0`}
       >
         {/* Header with Logo + Close Button */}

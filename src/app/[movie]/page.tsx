@@ -67,7 +67,7 @@ export default async function MoviePage({
   return (
     <MovieLayout>
       <main className="bg-[#1a0000] text-white min-h-screen p-6">
-        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-4">
+        <div className="max-w-3xl mx-auto grid gap-4">
           <h1 className="text-3xl font-light mb-0 text-red-600">
             {movie.title.toUpperCase()}
           </h1>

@@ -1,12 +1,10 @@
 "use client";
-import Link from "next/link";
 import { ReactNode, useState } from "react";
-import { FaHome, FaTv, FaChevronLeft } from "react-icons/fa";
 import Footer from "../../components/Footer";
-import Image from "next/image";
 import BackButton from "../common/BackButton";
 import SideBar from "../common/SideBar";
 import { Search } from "lucide-react";
+import Nav from "../common/Nav";
 import SearchDropdown from "../SearchDropdown";
 
 interface MovieLayoutProps {
@@ -40,6 +38,9 @@ export default function MovieLayout({ children }: MovieLayoutProps) {
 
         <div>
           <SideBar />
+        </div>
+        <div className="hidden md:flex">
+          <Nav />
         </div>
       </header>
 

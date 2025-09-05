@@ -11,7 +11,7 @@ export default function MovieCard({ movie }: { movie: any }) {
   return (
     <Link href={`${movie.trailer}`} onClick={() => setActive(true)}>
       <div
-        className={`relative w-[350px] md:w-[350px] lg:w-[400px] h-[200px] md:h-[250px] lg:h-[300px] flex-shrink-0 overflow-hidden shadow-lg hover:scale-105 transition 
+        className={`relative w-[350px] md:w-[350px] lg:w-[400px] h-[200px] md:h-[250px] lg:h-[300px] flex-shrink-0 overflow-hidden shadow-lg hover:scale-105 transition
           ${
             active
               ? "border-4 border-yellow-400"
