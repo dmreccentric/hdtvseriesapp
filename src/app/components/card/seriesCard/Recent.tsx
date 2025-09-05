@@ -2,6 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import Pagination from "../../common/Pagination";
 
 interface Movie {
   _id: string;
@@ -26,9 +27,25 @@ function toTitleCase(str: string) {
     .join(" ");
 }
 
+function MovieSkeleton() {
+  return (
+    <div className="relative w-full md:w-[180px] lg:w-[200px] flex-shrink-0">
+      <div className="relative h-[220px] md:h-[270px] lg:h-[300px] rounded-2xl overflow-hidden bg-gray-500 animate-pulse" />
+      <div className="mt-2 px-2 py-1">
+        <div className="h-4 bg-gray-500 rounded w-3/4 animate-pulse"></div>
+      </div>
+      <div className="mt-2 px-2 py-1">
+        <div className="h-4 bg-gray-500 rounded w-full animate-pulse"></div>
+      </div>
+    </div>
+  );
+}
+
 export default function MovieCard() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const cardsPerPage = 28;
 
   useEffect(() => {
     async function fetchMovies() {
@@ -51,39 +68,64 @@ export default function MovieCard() {
     fetchMovies();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  const totalPages = Math.ceil(movies.length / cardsPerPage);
+  const indexOfLastCard = currentPage * cardsPerPage;
+  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+  const currentMovies = movies.slice(indexOfFirstCard, indexOfLastCard);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col">
+        <div className="grid gap-4 grid-cols-2">
+          {Array.from({ length: 12 }).map((_, idx) => (
+            <MovieSkeleton key={idx} />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   if (movies.length === 0) return <p>No movies found</p>;
 
   return (
-    <>
-      {movies.map((movie) => (
-        <Link key={movie._id} href={`/${movie._id}`}>
-          <div className="mt-3">
-            <div className="relative md:w-[180px] lg:w-[200px] flex-shrink-0">
-              {/* Image Card */}
-              <div className="relative h-[220px] md:h-[270px] lg:h-[300px] rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition w-full">
-                <Image
-                  src={movie.img ?? "/fallback.png"}
-                  alt={movie.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 180px, (max-width: 1024px) 200px, 300px"
-                />
-              </div>
+    <div className="flex flex-col">
+      <div className="grid gap-4 grid-cols-2">
+        {movies.map((movie) => (
+          <Link key={movie._id} href={`/${movie._id}?source=newmovie`}>
+            <div>
+              <div className="relative md:w-[180px] lg:w-[200px] flex-shrink-0">
+                {/* Image Card */}
+                <div className="relative h-[220px] md:h-[270px] lg:h-[300px] rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition w-full">
+                  <Image
+                    src={movie.img ?? "/fallback.png"}
+                    alt={movie.title}
+                    fill
+                    className="object-fill"
+                    sizes="(max-width: 768px) 180px, (max-width: 1024px) 200px, 300px"
+                  />
+                </div>
 
-              {/* Title */}
-              <div className="mt-2 px-2 py-1 rounded-lg text-sm font-normal font-arvo text-left text-red-600">
-                {toTitleCase(movie.title)}
-              </div>
+                {/* Title */}
+                <div className="mt-2 px-2 py-1 rounded-lg text-sm font-normal font-arvo text-left text-red-600">
+                  {toTitleCase(movie.title)}
+                </div>
 
-              {/* Subtitle */}
-              <div className="mt-2 px-2 py-1 rounded-lg text-white text-[13px] font-normal font-arvo text-left">
-                {toTitleCase(movie.subtitle)}
+                {/* Subtitle */}
+                <div className="mt-2 px-2 py-1 rounded-lg text-white text-[13px] font-normal font-arvo text-left">
+                  {toTitleCase(movie.subtitle)}
+                </div>
               </div>
             </div>
-          </div>
-        </Link>
-      ))}
-    </>
+          </Link>
+        ))}
+      </div>
+
+      {/*Reuseable Pagination */}
+      <Pagination
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+        currentPage={currentPage}
+      />
+    </div>
   );
 }

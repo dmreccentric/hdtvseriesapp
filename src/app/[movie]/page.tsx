@@ -19,14 +19,15 @@ interface Movie {
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
-async function getMovie(id: string): Promise<Movie | null> {
+async function getMovie(
+  id: string,
+  source: "movie" | "newmovie" = "movie"
+): Promise<Movie | null> {
   try {
-    const res = await fetch(`${API_BASE}/api/v1/movie/${id}`, {
-      cache: "no-store", // always fresh data
+    const res = await fetch(`${API_BASE}/api/v1/${source}/${id}`, {
+      cache: "no-store",
     });
-
     if (!res.ok) return null;
-
     const raw = await res.json();
     return raw.movie || null;
   } catch {
@@ -34,12 +35,24 @@ async function getMovie(id: string): Promise<Movie | null> {
   }
 }
 
+function toTitleCase(str: string) {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export default async function MoviePage({
   params,
+  searchParams,
 }: {
   params: { movie: string };
+  searchParams: { source?: string };
 }) {
-  const movie = await getMovie(params.movie);
+  const source = (searchParams.source as "movie" | "newmovie") ?? "movie";
+  const movie = await getMovie(params.movie, source);
 
   if (!movie) {
     return (
@@ -77,7 +90,7 @@ export default async function MoviePage({
             )}
 
             <h1 className="text-2xl text-gray-300 font-semibold mb-4">
-              {movie.title}
+              {toTitleCase(movie.title)}
             </h1>
 
             {movie.rating && (
@@ -93,7 +106,11 @@ export default async function MoviePage({
             {movie.released && (
               <p className="mb-2 text-gray-300">
                 <span className="font-semibold">Released:</span>{" "}
-                {movie.released}
+                {new Date(movie.released).toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })}
               </p>
             )}
 

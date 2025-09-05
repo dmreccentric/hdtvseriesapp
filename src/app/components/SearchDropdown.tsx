@@ -16,6 +16,15 @@ interface Movie {
   type?: string;
 }
 
+function toTitleCase(str: string) {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export default function SearchDropdown({ query }: { query: string }) {
   const [results, setResults] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(false);
@@ -30,7 +39,9 @@ export default function SearchDropdown({ query }: { query: string }) {
       try {
         setLoading(true);
         const res = await fetch(
-          `${API_BASE}/api/v1/movie?search=${encodeURIComponent(query)}&limit=5`
+          `${API_BASE}/api/v1/movie?search=${encodeURIComponent(
+            query
+          )}&limit=10`
         );
 
         if (!res.ok) {
@@ -56,7 +67,7 @@ export default function SearchDropdown({ query }: { query: string }) {
   if (!query) return null;
 
   return (
-    <div className="absolute mt-2 w-full bg-[#1f1f1f] border border-white/10 rounded-lg shadow-lg overflow-hidden z-50">
+    <div className="absolute mt-2 w-full bg-[#1f1f1f] border border-white/10 rounded-lg shadow-lg overflow-hidden z-50 max-h-120 overflow-y-auto search-scrollbar">
       {loading ? (
         <div className="flex items-center justify-center p-4 text-gray-300">
           <Loader2 className="h-5 w-5 animate-spin mr-2" />
@@ -79,7 +90,7 @@ export default function SearchDropdown({ query }: { query: string }) {
 
             <div className="flex-1">
               <h4 className="text-sm font-semibold text-white truncate">
-                {movie.title}
+                {toTitleCase(movie.title)}
               </h4>
               <p className="text-xs text-gray-400 line-clamp-2">{movie.plot}</p>
               <div className="flex items-center text-xs text-gray-300 mt-1 space-x-2">

@@ -14,7 +14,7 @@ interface Movie {
   rating?: number;
   trailer?: string;
   createdAt?: string;
-  released?: number;
+  released?: string;
 }
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
@@ -67,9 +67,20 @@ export default async function HomePage() {
   const trailers = movies.filter((m) => m.trailer).slice(0, 10);
   // const recentlyAdded = [...newMovies].slice(0, 10);
   const newReleases = [...movies]
-    .filter((m) => typeof m.released === "number")
-    .sort((a, b) => (b.released || 0) - (a.released || 0))
-    .slice(0, 10);
+    .filter((m) => m.released && !isNaN(new Date(m.released).getTime())) // ✅ only valid dates
+    .sort(
+      (a, b) =>
+        new Date(b.released!).getTime() - new Date(a.released!).getTime()
+    ) // ✅ newest first
+    .slice(0, 10)
+    .map((m) => ({
+      ...m,
+      released: new Date(m.released!).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+    }));
 
   return (
     <MainLayout>
@@ -81,7 +92,7 @@ export default async function HomePage() {
 
         {/* Popular Right Now */}
         <section className="mb-10 pt-4 border-b-1 border-t-2">
-          <CardHeading title="POPULAR TV SHOWS" />
+          <CardHeading title="POPULAR TV SHOWS" link="/series" tab="topRated" />
           <div className="flex gap-4 overflow-x-auto pb-4 scroll-smooth no-scrollbar">
             {popularMovies.map((movie) => (
               <PopularMovies key={movie._id} movie={movie} />
@@ -91,7 +102,7 @@ export default async function HomePage() {
 
         {/* Trailers */}
         <section className="mb-10 border-b-1">
-          <CardHeading title="TRAILERS" />
+          <CardHeading title="TRAILERS" link="/trailers" />
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide scroll-smooth no-scrollbar">
             {trailers.map((movie) => (
               <Trailers key={movie._id} movie={movie} />
@@ -101,7 +112,7 @@ export default async function HomePage() {
 
         {/* Recently Added */}
         <section className="mb-10">
-          <CardHeading title="RECENTLY ADDED" />
+          <CardHeading title="RECENTLY ADDED" link="/series" tab="recent" />
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide scroll-smooth no-scrollbar">
             <RecentlyAdded />
           </div>
@@ -109,7 +120,7 @@ export default async function HomePage() {
 
         {/* Newly Released */}
         <section className="mb-10">
-          <CardHeading title="NEWLY RELEASED" />
+          <CardHeading title="NEWLY RELEASED" link="/series" tab="newRelease" />
           <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide scroll-smooth no-scrollbar">
             {newReleases.map((movie) => (
               <NewlyReleased key={movie._id} movie={movie} />

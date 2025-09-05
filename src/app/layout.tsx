@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Arvo } from "next/font/google";
 import "./globals.css";
+import { TabHistoryProvider } from "./context/TabHistoryContext";
 
 // Load Arvo font
 const arvo = Arvo({
@@ -24,7 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={` ${arvo.variable} antialiased`}>{children}</body>
+      <TabHistoryProvider>
+        <body className={` ${arvo.variable} antialiased`}>{children}</body>
+      </TabHistoryProvider>
     </html>
   );
 }

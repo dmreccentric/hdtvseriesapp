@@ -55,7 +55,7 @@ export default async function MovieCard() {
   return (
     <>
       {NewMovie.map((movie) => (
-        <Link key={movie._id} href={`/${movie._id}`}>
+        <Link key={movie._id} href={`/${movie._id}?source=newmovie`}>
           <div className="mt-3">
             <div className="relative w-[120px] md:w-[180px] lg:w-[200px] flex-shrink-0">
               {/* Rating Badge */}

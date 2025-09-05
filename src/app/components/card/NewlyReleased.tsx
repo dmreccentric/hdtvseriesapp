@@ -29,7 +29,7 @@ export default function MovieCard({ movie }: { movie: any }) {
             {movie.rating?.toFixed(1) ?? "N/A"}
           </div>
           <div className="bg-white text-black text-xs font-semibold px-1 place-content-center rounded-full shadow-md">
-            {movie.released}
+            {new Date(movie.released).getFullYear()}
           </div>
         </div>
 

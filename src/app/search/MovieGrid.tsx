@@ -12,6 +12,15 @@ type Movie = {
   type: "movie" | "series";
 };
 
+function toTitleCase(str: string) {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export default function MovieGrid({ movies }: { movies: Movie[] }) {
   const router = useRouter();
   const [filtered, setFiltered] = useState<Movie[]>(
@@ -180,7 +189,7 @@ export default function MovieGrid({ movies }: { movies: Movie[] }) {
             className="bg-gray-300 text-black font-semibold flex items-center justify-center px-2 text-sm h-16 rounded-lg cursor-pointer hover:bg-gray-400 active:border-2 focus:border-2 focus:border-red-500 active:border-red-500"
             onClick={() => router.push(`/${item._id}`)}
           >
-            {item.title}
+            {toTitleCase(item.title)}
           </div>
         ))}
       </div>

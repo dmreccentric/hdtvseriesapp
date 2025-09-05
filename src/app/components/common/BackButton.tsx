@@ -1,18 +1,20 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { FaChevronLeft } from "react-icons/fa";
+import { useTabHistory } from "../../context/TabHistoryContext";
 
 const BackButton = () => {
-  const router = useRouter();
+  const { handleBack } = useTabHistory();
+  // const router = useRouter();
 
-  const handleBack = () => {
-    if (window.history.length > 1) {
-      router.back(); // go back if possible
-    } else {
-      router.push("/"); // fallback to home if no history
-    }
-  };
+  // const handleBack = () => {
+  //   if (window.history.length > 1) {
+  //     router.back(); // go back if possible
+  //   } else {
+  //     router.push("/"); // fallback to home if no history
+  //   }
+  // };
   return (
     <button
       onClick={handleBack}

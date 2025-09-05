@@ -2,7 +2,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import Pagination from "../../common/Pagination"; // ✅ import reusable component
+import Pagination from "../../common/Pagination";
+import { useSearchParams, useRouter } from "next/navigation";
 
 interface Movie {
   _id: string;
@@ -13,7 +14,7 @@ interface Movie {
   rating?: number;
   trailer?: string;
   createdAt?: string;
-  released?: number;
+  released?: string;
 }
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
@@ -41,7 +42,13 @@ function MovieSkeleton() {
 export default function MovieCard() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const initialPage = parseInt(searchParams.get("page") || "1", 10);
+  const [currentPage, setCurrentPage] = useState(initialPage);
+
   const cardsPerPage = 28;
 
   useEffect(() => {
@@ -49,9 +56,15 @@ export default function MovieCard() {
       try {
         const res = await fetch(`${API_BASE}/api/v1/movie`);
         const data = await res.json();
-        const sorted = (data.movies ?? []).sort(
-          (a: Movie, b: Movie) => (b.rating ?? 0) - (a.rating ?? 0)
-        );
+        const sorted = (data.movies ?? [])
+          .filter(
+            (m: Movie) => m.released && !isNaN(new Date(m.released).getTime())
+          )
+          .sort(
+            (a: Movie, b: Movie) =>
+              new Date(b.released!).getTime() - new Date(a.released!).getTime()
+          );
+
         setMovies(sorted);
       } catch (err) {
         console.error(err);
@@ -61,6 +74,10 @@ export default function MovieCard() {
     }
     fetchMovies();
   }, []);
+
+  useEffect(() => {
+    router.push(`?page=${currentPage}`, { scroll: false });
+  }, [currentPage, router]);
 
   if (loading) {
     // ✅ Show 12 skeletons while loading
@@ -105,11 +122,10 @@ export default function MovieCard() {
         ))}
       </div>
 
-      {/* ✅ Reusable Pagination */}
       <Pagination
         totalPages={totalPages}
-        currentPage={currentPage}
         onPageChange={setCurrentPage}
+        currentPage={currentPage}
       />
     </div>
   );

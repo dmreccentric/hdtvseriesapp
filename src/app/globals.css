@@ -56,3 +56,23 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #ff4d6d #1a0000;
 }
+
+/* Custom Scrollbar */
+.search-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.search-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #444; /* thumb color */
+  border-radius: 4px;
+}
+
+.search-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Firefox */
+.search-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #444 transparent;
+}
