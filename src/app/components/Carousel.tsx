@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { toTitleCase } from "./card/RecentlyAdded";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -56,7 +57,7 @@ export default function Carousel({ movies }: CarouselProps) {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
                   <h2 className="absolute bottom-4 left-4 text-lg font-bold text-white">
-                    {movie.title}
+                    {toTitleCase(movie.title)}
                   </h2>
                 </div>
               </Link>
@@ -70,7 +71,7 @@ export default function Carousel({ movies }: CarouselProps) {
         {movies[activeIndex] && (
           <>
             <h2 className="text-2xl font-bold mb-2">
-              {movies[activeIndex].title}
+              {toTitleCase(movies[activeIndex].title)}
             </h2>
             <p className="text-sm text-gray-300 mb-4">
               {movies[activeIndex].plot || "No description available."}
@@ -82,15 +83,25 @@ export default function Carousel({ movies }: CarouselProps) {
               </p>
               <p>
                 <span className="font-semibold">Released:</span>{" "}
-                {movies[activeIndex].released ?? "Unknown"}
+                {movies[activeIndex].released
+                  ? new Date(movies[activeIndex].released).toLocaleDateString(
+                      "en-GB",
+                      {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      }
+                    )
+                  : "Unknown"}
               </p>
+
               <p>
                 <span className="font-semibold">Genres:</span>{" "}
                 {movies[activeIndex].genres?.join(", ") || "Not specified"}
               </p>
               <Link
                 href={`/${movies[activeIndex]._id}`}
-                className="bg-white text-black font-semibold py-2 px-4 rounded-3xl"
+                className="bg-white text-black font-semibold py-2 px-4 rounded-3xl mt-3"
               >
                 Watch
               </Link>
