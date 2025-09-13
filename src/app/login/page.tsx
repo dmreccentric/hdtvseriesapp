@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useUser } from "../context/UserContext";
 
 export default function LoginPage() {
+  const { setUsername } = useUser();
   const API_BASE = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
 
@@ -34,6 +36,12 @@ export default function LoginPage() {
       if (!res.ok) {
         setError(data.msg || "Login failed");
       } else {
+        const username = data.user?.username || data.username;
+
+        if (username) {
+          setUsername(username);
+        }
+
         router.push("/admin/movies");
       }
     } catch (err) {
@@ -50,7 +58,7 @@ export default function LoginPage() {
         onSubmit={handleLogin}
         className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm space-y-4"
       >
-        <h2 className="text-2xl font-bold text-center">Login</h2>
+        <h2 className="text-2xl font-bold text-center text-black">Login</h2>
         {error && <p className="text-red-500 text-sm">{error}</p>}
 
         <input
@@ -60,7 +68,7 @@ export default function LoginPage() {
           value={form.username}
           onChange={handleChange}
           required
-          className="w-full border p-2 rounded"
+          className="w-full border p-2 rounded placeholder:text-gray-600"
         />
 
         <input
@@ -70,7 +78,7 @@ export default function LoginPage() {
           value={form.password}
           onChange={handleChange}
           required
-          className="w-full border p-2 rounded"
+          className="w-full border p-2 rounded placeholder:text-gray-600"
         />
 
         <button
@@ -81,7 +89,7 @@ export default function LoginPage() {
           {loading ? "Logging in..." : "Login"}
         </button>
 
-        <p className="text-sm text-center">
+        <p className="text-sm text-center text-black">
           Don’t have an account?{" "}
           <Link href="/register" className="text-blue-600 hover:underline">
             Register

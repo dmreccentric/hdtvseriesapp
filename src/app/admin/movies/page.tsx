@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import AdminSearchLayout from "@/app/components/Admin/AdminSearchLayout";
+import { toTitleCase } from "@/app/components/card/RecentlyAdded";
 
 interface Movie {
   _id: string;
@@ -22,6 +24,7 @@ interface Movie {
 
 export default function MoviesAdminPage() {
   const router = useRouter();
+  const [searchResults, setSearchResult] = useState<Movie[]>([]);
 
   const API_BASE = process.env.NEXT_PUBLIC_API_URL;
   const genresEnum = [
@@ -572,51 +575,13 @@ export default function MoviesAdminPage() {
         </button>
       </form>
 
-      {/* Movie List */}
-      <div className="mt-10 max-w-3xl mx-auto space-y-4">
-        <div className="flex justify-center gap-4 mt-6">
-          <button
-            onClick={handlePrevPage}
-            disabled={page === 1}
-            className="px-4 py-2 bg-black text-white rounded disabled:opacity-50"
-          >
-            Previous
-          </button>
-          <span className="px-4 py-2 text-black">
-            Page {page} of {totalPages}
-          </span>
-          <button
-            onClick={handleNextPage}
-            disabled={page === totalPages}
-            className="px-4 py-2 bg-black text-white  rounded disabled:opacity-50"
-          >
-            Next
-          </button>
-        </div>
-        {fetching ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div
-                key={i}
-                className="animate-pulse bg-gray-200 rounded-xl overflow-hidden shadow"
-              >
-                {/* Image placeholder */}
-                <div className="h-48 bg-gray-300"></div>
-                <div className="p-3 space-y-2">
-                  {/* Title placeholder */}
-                  <div className="h-4 w-3/4 bg-gray-300 rounded"></div>
-                  {/* Genres placeholder */}
-                  <div className="h-3 w-1/2 bg-gray-300 rounded"></div>
-                  {/* Rating placeholder */}
-                  <div className="h-3 w-1/3 bg-gray-300 rounded"></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : movies.length === 0 ? (
-          <p>No movies found.</p>
-        ) : (
-          movies.map((movie) => (
+      {/*Search Bar */}
+      <div className="mt-6">
+        <AdminSearchLayout onResults={setSearchResult} />
+      </div>
+      <div className="mt-6 max-w-3xl mx-auto space-y-4 pb-16">
+        {searchResults.length > 0 ? (
+          searchResults.map((movie) => (
             <div
               key={movie._id}
               className="flex gap-4 bg-white p-4 rounded shadow"
@@ -624,35 +589,27 @@ export default function MoviesAdminPage() {
               {/* Movie Image */}
               <div className="w-24 h-32 flex-shrink-0 relative">
                 <Image
-                  src={
-                    movie.img ||
-                    "https://res.cloudinary.com/dzhhpr7f1/image/upload/v1755246293/no-image-placeholder_arffdk.png"
-                  }
+                  src={movie.img || "/placeholder.jpg"}
                   alt={movie.title}
                   fill
-                  className="w-full h-full object-fill rounded"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="w-full h-full object-cover rounded"
+                  sizes="(max-width: 640px) 100vw, 
+         (max-width: 1024px) 50vw, 
+         33vw"
                 />
               </div>
 
               {/* Movie Details */}
               <div className="flex-1">
-                <p className="font-bold text-lg text-black">{movie.title}</p>
-                <p className="text-sm line-clamp-4 md:line-clamp-none text-gray-700">
+                <p className="font-bold text-lg text-black">
+                  {toTitleCase(movie.title)}
+                </p>
+                <p className="text-sm text-gray-700 line-clamp-3">
                   {movie.plot}
                 </p>
                 <p className="text-xs text-gray-500">
-                  Type: {movie.type} | Language: {movie.language || "N/A"} |
-                  Genres: {movie.genres.join(", ")} | Rating: {movie.rating}/10
-                  | Released: {movie.released}
+                  Type: {movie.type} | Rating: {movie.rating || "N/A"}
                 </p>
-                {movie.link && (
-                  <p className="text-xs text-white  p-2 bg-blue-600 rounded-lg text-center w-fit">
-                    <a href={movie.link} target="_blank" rel="noreferrer">
-                      Download Link
-                    </a>
-                  </p>
-                )}
               </div>
 
               {/* Actions */}
@@ -672,26 +629,134 @@ export default function MoviesAdminPage() {
               </div>
             </div>
           ))
+        ) : (
+          // fallback to paginated list if no search
+          <>
+            {/* Movie List */}
+            <div className="mt-10 max-w-3xl mx-auto space-y-4">
+              <div className="flex justify-center gap-4 mt-6">
+                <button
+                  onClick={handlePrevPage}
+                  disabled={page === 1}
+                  className="px-4 py-2 bg-black text-white rounded disabled:opacity-50"
+                >
+                  Previous
+                </button>
+                <span className="px-4 py-2 text-black">
+                  Page {page} of {totalPages}
+                </span>
+                <button
+                  onClick={handleNextPage}
+                  disabled={page === totalPages}
+                  className="px-4 py-2 bg-black text-white  rounded disabled:opacity-50"
+                >
+                  Next
+                </button>
+              </div>
+              {fetching ? (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                  {Array.from({ length: 8 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="animate-pulse bg-gray-200 rounded-xl overflow-hidden shadow"
+                    >
+                      {/* Image placeholder */}
+                      <div className="h-48 bg-gray-300"></div>
+                      <div className="p-3 space-y-2">
+                        {/* Title placeholder */}
+                        <div className="h-4 w-3/4 bg-gray-300 rounded"></div>
+                        {/* Genres placeholder */}
+                        <div className="h-3 w-1/2 bg-gray-300 rounded"></div>
+                        {/* Rating placeholder */}
+                        <div className="h-3 w-1/3 bg-gray-300 rounded"></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : movies.length === 0 ? (
+                <p>No movies found.</p>
+              ) : (
+                movies.map((movie) => (
+                  <div
+                    key={movie._id}
+                    className="flex gap-4 bg-white p-4 rounded shadow"
+                  >
+                    {/* Movie Image */}
+                    <div className="w-24 h-32 flex-shrink-0 relative">
+                      <Image
+                        src={
+                          movie.img ||
+                          "https://res.cloudinary.com/dzhhpr7f1/image/upload/v1755246293/no-image-placeholder_arffdk.png"
+                        }
+                        alt={movie.title}
+                        fill
+                        className="w-full h-full object-fill rounded"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                    </div>
+
+                    {/* Movie Details */}
+                    <div className="flex-1">
+                      <p className="font-bold text-lg text-black">
+                        {toTitleCase(movie.title)}
+                      </p>
+                      <p className="text-sm line-clamp-4 md:line-clamp-none text-gray-700">
+                        {movie.plot}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        Type: {movie.type} | Language: {movie.language || "N/A"}{" "}
+                        | Genres: {movie.genres.join(", ")} | Rating:{" "}
+                        {movie.rating}/10 | Released: {movie.released}
+                      </p>
+                      {movie.link && (
+                        <p className="text-xs text-white  p-2 bg-blue-600 rounded-lg text-center w-fit">
+                          <a href={movie.link} target="_blank" rel="noreferrer">
+                            Download Link
+                          </a>
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex flex-col gap-2">
+                      <button
+                        onClick={() => handleEdit(movie)}
+                        className="bg-yellow-500 text-white px-3 py-1.5 rounded hover:bg-yellow-600"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(movie._id)}
+                        className="bg-red-600 text-white px-3 py-1.5 rounded hover:bg-red-700"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+              <div className="flex justify-center gap-4 mt-6">
+                <button
+                  onClick={handlePrevPage}
+                  disabled={page === 1}
+                  className="px-4 py-2 bg-black text-white rounded disabled:opacity-50"
+                >
+                  Previous
+                </button>
+                <span className="px-4 py-2 text-black">
+                  Page {page} of {totalPages}
+                </span>
+                <button
+                  onClick={handleNextPage}
+                  disabled={page === totalPages}
+                  className="px-4 py-2 bg-black text-white  rounded disabled:opacity-50"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </>
         )}
-        <div className="flex justify-center gap-4 mt-6">
-          <button
-            onClick={handlePrevPage}
-            disabled={page === 1}
-            className="px-4 py-2 bg-black text-white rounded disabled:opacity-50"
-          >
-            Previous
-          </button>
-          <span className="px-4 py-2 text-black">
-            Page {page} of {totalPages}
-          </span>
-          <button
-            onClick={handleNextPage}
-            disabled={page === totalPages}
-            className="px-4 py-2 bg-black text-white  rounded disabled:opacity-50"
-          >
-            Next
-          </button>
-        </div>
       </div>
     </div>
   );
